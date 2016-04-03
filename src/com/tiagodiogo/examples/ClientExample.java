@@ -1,4 +1,4 @@
-package com.tiagodiogo;
+package com.tiagodiogo.examples;
 
 import java.io.BufferedReader;
 import java.io.IOException;

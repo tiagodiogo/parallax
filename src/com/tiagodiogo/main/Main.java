@@ -1,4 +1,6 @@
-package com.tiagodiogo;
+package com.tiagodiogo.main;
+
+import com.tiagodiogo.examples.ClientExample;
 
 public class Main {
 
