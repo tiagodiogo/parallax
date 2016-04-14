@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <!-- Bootstrap core CSS -->
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="icon" href="resources/icon.png">
+
+    <title>Parallax</title>
+
+    <!-- Custom styles for this template -->
+    <link href="resources/css/cover.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"><img height="48" width="48" src="resources/icon.png">&nbsp;</img>Parallax</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li><a href="index.html">Monitor</a></li>
+                  <li><a href="flash.html">Flash</a></li>
+                  <li class="active"><a href="#">Setup</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div style="text-align: left">
+            <h3>Security</h3>
+          
+            <form id="keys" class="form-horizontal">
+			  <div style="margin-top: 20px;" class="form group">
+			  	<label style="padding-top: 8px;" for "llsec" class="col-sm-4">Link Layer Security Key</label>
+			    <div class="col-sm-8">
+			    	<input type="text" class="form-control" id="llsec" placeholder="000102030405060708090A0B0C0D0E0F">
+			  	</div>
+			  </div>
+			  <div class="form group">
+			  	<label style="padding-top: 18px;"for "dtls" class="col-sm-4">DTLS Key</label>
+			    <div style="padding-top: 10px;" class="col-sm-8">
+			    	<input type="text" class="form-control" id="dtls" placeholder="000102030405060708090A0B0C0D0E0F">
+			  	</div>
+			  </div>
+			   <div style="margin-right: 20px; text-align: right;"> 
+				<button type="submit" style="margin-top: 15px;" class="btn btl-lg btn-default">Update Keys</button>
+			  </div>
+			</form>
+			
+			<h3>Infrastructure</h3>
+			<form id="zones" class="form-horizontal">
+			  <div style="margin-top: 20px;" class="form group">
+			  	<label style="padding-top: 8px;" for "name" class="col-sm-4">Zone Name</label>
+			    <div class="col-sm-8">
+			    	<input type="text" class="form-control" id="name" placeholder="NT-1F">
+			  	</div>
+			  </div>
+			  <div class="form group">
+			  	<label style="padding-top: 18px;"for "description" class="col-sm-4">Zone Description</label>
+			    <div style="padding-top: 10px;" class="col-sm-8">
+			    	<input type="text" class="form-control" id="description" placeholder="North Tower - First Floor">
+			  	</div>
+			  </div>
+			  <div style="margin-right: 20px; text-align: right;"> 
+				<button type="submit" style="margin-top: 15px;" class="btn btl-lg btn-default">Insert Zone</button>
+			  </div>
+		    </form>
+          
+          <table style="margin-top: 30px" class="table">
+  			<tr>
+  				<th width="20%">Name</th>
+  				<th width="65%">Description</th>
+  				<th width="15%">Node Count</th>
+  			</tr>
+  			<tr>
+  				<td>NT-1F</td>
+  				<td>North Tower - First Floor</td>
+  				<td style="text-align:center">12</td>
+  			</tr>
+  			<tr>
+  				<td>NT-2F</td>
+  				<td>North Tower - Second Floor</td>
+  				<td style="text-align:center">4</td>
+  			</tr>
+  			<tr>
+  				<td>DM</td>
+  				<td>Department of Mathematics</td>
+  				<td style="text-align:center">15</td>
+  			</tr>
+  			<tr>
+  				<td>CL</td>
+  				<td>Central Library</td>
+  				<td style="text-align:center">3</td>
+  			</tr>
+		  </table>
+		 
+		  </div>
+
+          
+          <h3 style="margin-top:20px" id="data"></h3>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Available on <a href="https://github.com/tiagodiogo/parallax">GitHub</a>, by <a href="http://www.tiagodiogo.com">Tiago Diogo</a></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="resources/js/jquery-2.2.2.min.js"></script>
+    <script src="resources/js/bootstrap.min.js"></script>
+  </body>
+  
+  <script>
+  	$( "#form" ).submit(function( event ) {
+  		event.preventDefault();
+		$('#data').html("flashing new firmware, please wait...");
+  		$.ajax({    //fetches data from file and inserts it in <div id="data"></div>
+  			type: 'post',
+     		url:'flash.php',
+     		data:{device: $('#device-type').val(),
+     			  coap: $('#coap').is(':checked'),
+     			  llsec: $('#llsec').is(':checked'),
+     			  dtls: $('#dtls').is(':checked')},
+     		success :function(data){
+				$('#data').html("Flashing Completed");
+     		}	
+   		}); 
+	});
+   </script>
+  
+</html>

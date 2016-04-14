@@ -10,7 +10,7 @@
     
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Bootstrapper</title>
+    <title>Parallax</title>
 
     <!-- Custom styles for this template -->
     <link href="resources/css/cover.css" rel="stylesheet">
@@ -21,70 +21,60 @@
 
     <div class="site-wrapper">
 
-      <div class="site-wrapper-inner">
+      <div class="site-wrapper-inner" style="vertical-align: top">
 
         <div class="cover-container">
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Bootstrapper</h3>
+              <h3 class="masthead-brand"><img height="48" width="48" src="resources/icon.png">&nbsp;</img>Parallax</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li><a href="#">Monitor</a></li>
-                  <li class="active"><a href="#">Flash</a></li>
-                  <li><a href="#">Setup</a></li>
+                  <li class="active"><a href="#">Monitor</a></li>
+                  <li><a href="flash.html">Flash</a></li>
+                  <li><a href="setup.html">Setup</a></li>
                 </ul>
               </nav>
             </div>
           </div>
 
-          <div class="inner cover">
-            <h1 class="cover-heading">Contiki-OS Firmware Flasher</h1>
-            <p class="lead">Select a device and the features you want to incorporate, plug the device to a USB port and press the flash button. It is that easy.</p>
-          
-            <form id="form" class="form-horizontal">
-             
-             
-			  <div style="margin-top: 50px" class="form group">
-			  	<label for "device-type" class="col-sm-3 col-sm-offset-1 control-label">Device Type</label>
-			  	<div class="col-sm-7">
-			  		<select id="device-type" class="form-control">
-			  			<option value="remote">Zolertia RE-Mote</option>
-			  			<option value="z1">Zolertia Z1</option>
-			  			<option value="econotag">Redwire Econotag</option>
-			  			<option value="cc2538dk">TI CC2538DK</option>
-			  			<option value="wismote">Arago Wismote</option>
-			  			<option value="sky">TelosB Sky</option>
-			  		</select>
-			  	</div>
-			  </div>
-			
-			<div class="form group">  
-			 	<label style="margin-top: 20px" class="checkbox-inline">
-					<input type="checkbox" id="coap"> CoAP Server
-			  	</label>
-				<label style="margin-top: 20px" class="checkbox-inline">
-	  				<input name=llsec type="checkbox" id="llsec"> Link-Layer Security
-				</label>
-				<label style="margin-top: 20px" class="checkbox-inline">
-	  				<input name=dtls type="checkbox" id="dtls"> DTLS
-				</label>
-			</div>
-			  
-			<div style="margin-top: 30px"> 
-				<button type="submit" class="btn btl-lg btn-default">Flash Device</button>
-			</div>
-			
-			</form>
+          <div class="inner cover" style="margin-top: 150px; text-align: left">
+<ul class="nav nav-pills">
+  <li role="presentation" class="active"><a href="#">NT-1F</a></li>
+  <li role="presentation"><a href="#">DM</a></li>
+  <li role="presentation"><a href="#">CL</a></li>
+</ul>
+
+	  <h3>North Tower - First Floor</h3>
+      <table style="margin-top: 30px" class="table">
+  			<tr>
+  				<th width="50%">Name</th>
+  				<th width="30%">Resource</th>
+  				<th width="20%">Latest Reading</th>
+  			</tr>
+  			<tr>
+  				<td>tmp-sensor-room-001</td>
+  				<td>temperature</td>
+  				<td style="text-align:center">23ºC</td>
+  			</tr>
+  			<tr>
+  				<td>hum-sensor-room-125</td>
+  				<td>humidity</td>
+  				<td style="text-align:center">OK</td>
+  			</tr>
+  			<tr>
+  				<td>hum-sensor-room-234</td>
+  				<td>humidity</td>
+  				<td style="text-align:center">HIGH</td>
+  			</tr>
+		  </table>
 			
           </div>
           
-          <h3 style="margin-top:20px" id="data"></h3>
 
           <div class="mastfoot">
             <div class="inner">
               <p>Available on <a href="https://github.com/tiagodiogo/parallax">GitHub</a>, by <a href="http://www.tiagodiogo.com">Tiago Diogo</a></p>
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a></p>
             </div>
           </div>
 

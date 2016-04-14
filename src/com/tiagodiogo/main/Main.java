@@ -24,7 +24,7 @@ public class Main {
 		String response = null;
 		for(Entry<String, String> entry : nodes.entrySet()){
 			System.out.println("Node: " + entry.getKey() + " -> Parent: " + entry.getValue());
-			CoapClient client = new CoapClient("coap://["+entry.getKey()+"]:5683/cfg/stack/mac");
+			CoapClient client = new CoapClient("coap://["+entry.getKey()+"]:5683/info/id");
 			response = client.get().getResponseText();
 			System.out.print(response);
 		}
@@ -48,19 +48,19 @@ public class Main {
 													   prop.getProperty("USER"),
 													   prop.getProperty("PASS"));
 		
-		PreparedStatement preparedStatement = null;
-		String updateTableSQL = "UPDATE authorized_nodes SET active = ? "
-                + " WHERE name = ?";
-		
-		preparedStatement = dbConnection.prepareStatement(updateTableSQL);
-
-		preparedStatement.setBoolean(1, true);
-		preparedStatement.setString(2, response);
-		
-		preparedStatement.executeUpdate();
-
-		preparedStatement.close();
-		dbConnection.close();
+			PreparedStatement preparedStatement = null;
+			String updateTableSQL = "UPDATE authorized_nodes SET active = ? "
+	                + " WHERE id = ?";
+			
+			preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+	
+			preparedStatement.setBoolean(1, true);
+			preparedStatement.setString(2, response);
+			
+			preparedStatement.executeUpdate();
+	
+			preparedStatement.close();
+			dbConnection.close();
 		
 		} catch (SQLException e) {
 			e.printStackTrace();
