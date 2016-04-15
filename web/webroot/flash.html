@@ -32,7 +32,7 @@
                 <ul class="nav masthead-nav">
                   <li><a href="index.html">Monitor</a></li>
                   <li class="active"><a href="#">Flash</a></li>
-                  <li><a href="setup.html">Setup</a></li>
+                  <li><a href="setup.php">Setup</a></li>
                 </ul>
               </nav>
             </div>
@@ -121,7 +121,7 @@
 		$('#data').html("flashing new firmware, please wait...");
   		$.ajax({    //fetches data from file and inserts it in <div id="data"></div>
   			type: 'post',
-     		url:'flash.php',
+     		url:'flasher.php',
      		data:{device: $('#device-type').val(),
      			  coap: $('#coap').is(':checked'),
      			  llsec: $('#llsec').is(':checked'),
