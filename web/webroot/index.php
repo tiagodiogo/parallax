@@ -31,7 +31,7 @@
               <nav>
                 <ul class="nav masthead-nav">
                   <li class="active"><a href="#">Monitor</a></li>
-                  <li><a href="flash.html">Flash</a></li>
+                  <li><a href="flash.php">Flash</a></li>
                   <li><a href="setup.php">Setup</a></li>
                 </ul>
               </nav>

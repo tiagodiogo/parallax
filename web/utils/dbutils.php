@@ -121,4 +121,37 @@
 		return $resultArray;
     }
 
+    //returns the list of the platform supported hardware
+    function getHardware(){
+    	try{
+    		$db = getConnection();
+
+    		$sql = "SELECT id,code,name FROM supported_hardware";
+			$stmt = $db->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll();
+		}
+		catch(PDOException $e){
+		    echo $e->getMessage();
+	    }
+	    return $result;
+    }
+
+    //adds a new device to the authorized devices list
+    function insertNode($name, $type, $zone){
+    	try{
+    		//random unique integer only ID
+    		$id = md5(uniqid(rand(), true));
+			$db = getConnection();
+
+			$sql = "INSERT INTO authorized_nodes (keycode, name, type, zone, active) VALUES(?,?,?,?,?)";
+            $stmt = $db->prepare($sql);
+            $stmt->execute(array($id,$name,$type,$zone,0));
+		}
+		catch(PDOException $e){
+		    echo $e->getMessage();
+	    }
+	    return $id;
+    }
+
 ?>

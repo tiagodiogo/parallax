@@ -22,7 +22,13 @@
             	$id = $_POST['id'];
                 removeZone($id);
                 break;
-
+                
+            case 'insert_node':
+            	$name = $_POST['name'];
+            	$type = $_POST['type'];
+            	$zone = $_POST['zone'];
+            	$id = insertNode($name, $type, $zone);
+            	echo $id;
         }
-    }    
+    }
 ?>

@@ -1,5 +1,7 @@
 <?php
 
+  include '../../../utils/dbutils.php';
+
   $command1 = "sudo make clean -C";
   $command2 = "sudo make -C";
   $path = " /home/tiago/git/6lbr-develop/examples/6lbr-demo TARGET=";

@@ -43,8 +43,8 @@
               <h3 class="masthead-brand"><img height="48" width="48" src="resources/icon.png">&nbsp;</img>Parallax</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li><a href="index.html">Monitor</a></li>
-                  <li><a href="flash.html">Flash</a></li>
+                  <li><a href="index.php">Monitor</a></li>
+                  <li><a href="flash.php">Flash</a></li>
                   <li class="active"><a href="#">Setup</a></li>
                 </ul>
               </nav>

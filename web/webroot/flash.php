@@ -5,15 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
    
-    <!-- Bootstrap core CSS -->
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="icon" href="resources/icon.png">
-
     <title>Parallax</title>
-
-    <!-- Custom styles for this template -->
+   
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="icon" href="resources/icon.png">
     <link href="resources/css/cover.css" rel="stylesheet">
+    
+    <script src="resources/js/jquery-2.2.2.min.js"></script>
+    <script src="resources/js/bootstrap.min.js"></script>
+    
+    <?php
+      ini_set('display_errors',1);
+      error_reporting(E_ALL|E_STRICT);
+      include '../utils/dbutils.php';
+      $hardware = getHardware();
+      $zones = getZones();
+    ?>
 
   </head>
 
@@ -30,7 +37,7 @@
               <h3 class="masthead-brand"><img height="48" width="48" src="resources/icon.png">&nbsp;</img>Parallax</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li><a href="index.html">Monitor</a></li>
+                  <li><a href="index.php">Monitor</a></li>
                   <li class="active"><a href="#">Flash</a></li>
                   <li><a href="setup.php">Setup</a></li>
                 </ul>
@@ -53,12 +60,12 @@
 			  	<label style="padding-top: 18px" for "device-type" class="col-sm-3 col-sm-offset-1 control-label">Device Type</label>
 			  	<div style="padding-top: 10px; margin-right: 80px" class="col-sm-6">
 			  		<select id="device-type" class="form-control">
-			  			<option value="remote">Zolertia RE-Mote</option>
-			  			<option value="z1">Zolertia Z1</option>
-			  			<option value="econotag">Redwire Econotag</option>
-			  			<option value="cc2538dk">TI CC2538DK</option>
-			  			<option value="wismote">Arago Wismote</option>
-			  			<option value="sky">TelosB Sky</option>
+			  			<?php
+                    		$size = count($hardware);
+                    		for($i = 0; $i < $size; ++$i){
+                      			echo '<option value="'.$hardware[$i][0].'-'.$hardware[$i][1].'">'.$hardware[$i][2].'</option>';
+                    		}
+                  		?>
 			  		</select>
 			  	</div>
 			  </div>
@@ -66,10 +73,12 @@
 			  	<label style="padding-top: 18px;" for "infra-zone" class="col-sm-3 col-sm-offset-1 control-label">Infrastructure Zone</label>
 			    <div style="padding-top: 10px; margin-right: 80px" class="col-sm-6">
 			  		<select id="infra-zone" class="form-control">
-			  			<option value="1">North Tower - First Floor</option>
-			  			<option value="2">North Tower - Second Floor</option>
-			  			<option value="3">Department of Mathematics</option>
-			  			<option value="4">Central Library</option>
+			  			<?php
+                    		$size = count($zones);
+                    		for($i = 0; $i < $size; ++$i){
+                      			echo '<option value="'.$zones[$i][0].'">'.$zones[$i][2].'</option>';
+                    		}
+                  		?>
 			  		</select>
 			  	</div>
 			  </div>
@@ -108,28 +117,36 @@
 
     </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="resources/js/jquery-2.2.2.min.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
   </body>
   
   <script>
   	$( "#form" ).submit(function( event ) {
   		event.preventDefault();
 		$('#data').html("flashing new firmware, please wait...");
-  		$.ajax({    //fetches data from file and inserts it in <div id="data"></div>
+  		$.ajax({   
   			type: 'post',
-     		url:'flasher.php',
-     		data:{device: $('#device-type').val(),
-     			  coap: $('#coap').is(':checked'),
-     			  llsec: $('#llsec').is(':checked'),
-     			  dtls: $('#dtls').is(':checked')},
-     		success :function(data){
-				$('#data').html("Flashing Completed");
+     		url:'resources/php/actuator.php',
+     		data:{ 
+     			  command: "insert_node",
+     			  name: $('#name').val(),	
+     			  type: $('#device-type').val().split("-")[0],
+     			  zone: $('#infra-zone').val()},
+     		success :function(keycode){
+     			$.ajax({   
+  					type: 'post',
+     				url:'resources/php/contiki-flasher.php',
+     				data:{
+     				    id: keycode, 	
+     			  		device: $('#device-type').val().split("-")[1],
+     			  		coap: $('#coap').is(':checked'),
+     			  		llsec: $('#llsec').is(':checked'),
+     			  		dtls: $('#dtls').is(':checked')},
+     				success :function(response2){
+						$('#data').html("Flashing Completed");
+     				},	
+   				});
      		}	
-   		}); 
+   		});
 	});
    </script>
   
