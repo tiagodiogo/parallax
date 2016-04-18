@@ -141,7 +141,8 @@
     function insertNode($name, $type, $zone){
     	try{
     		//random unique integer only ID
-    		$id = md5(uniqid(rand(), true));
+    		//$id = md5(uniqid(rand(), true));
+    		$id = hexdec(uniqid());
 			$db = getConnection();
 
 			$sql = "INSERT INTO authorized_nodes (keycode, name, type, zone, active) VALUES(?,?,?,?,?)";

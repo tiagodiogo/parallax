@@ -22,7 +22,7 @@
   fwrite($file, $formated_llsec);
   fclose($file);
   
-  $keycode = '#define ID '.escapeshellarg($_POST['id']);
+  $keycode = '#define ID '.$_POST['id'];
   print_r($keycode);
   $keycode_file_path = $CONTIKI_BASE_DIR."/resources/bootstrap-id.h";
   $file = fopen($keycode_file_path, 'w');
