@@ -1,5 +1,5 @@
 package com.tiagodiogo.beans;
 
-public enum Node_Status {
+public enum NodeStatus {
 	NEW,ROGUE,ON,OFF
 }

@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,24 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import com.tiagodiogo.beans.NodeBean;
 
 public class DatabaseUtils {
 
 	private Properties prop = new Properties();
+	private BasicDataSource connectionPool = new BasicDataSource();
 	
 	public DatabaseUtils() throws IOException, ClassNotFoundException{
 		InputStream inputStream = new FileInputStream("database.properties");
 		prop.load(inputStream);
 		Class.forName(prop.getProperty("DRIVER"));
+		connectionPool.setUsername(prop.getProperty("USER"));
+		connectionPool.setPassword(prop.getProperty("PASS"));
+		connectionPool.setDriverClassName(prop.getProperty("DRIVER"));
+		connectionPool.setUrl(prop.getProperty("URL"));
+		connectionPool.setInitialSize(1);
 	}
 	
 	private Connection getConnection() throws SQLException{
-		return DriverManager.getConnection(prop.getProperty("URL"),
-				   prop.getProperty("USER"),
-				   prop.getProperty("PASS"));
+		return connectionPool.getConnection();
 	}
-	
+		
 	
 	public void setIP(Long keycode, String ip) throws SQLException{
 		Connection dbConnection = getConnection();
@@ -87,7 +92,26 @@ public class DatabaseUtils {
 		int id = getID(ip);
 		
 		PreparedStatement preparedStatement = null;
-		String updateTableSQL = "UPDATE node_resources SET value = ? WHERE node = ? ";
+		String updateTableSQL = "UPDATE node_resources SET value = ? WHERE node = ? AND name = temperature";
+		
+		preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+
+		preparedStatement.setString(1, content);
+		preparedStatement.setInt(2, id);
+		
+		preparedStatement.executeUpdate();
+
+		preparedStatement.close();
+		dbConnection.close();
+		
+	}
+
+	public void setButton(String ip, String content) throws SQLException {
+		Connection dbConnection = getConnection();
+		int id = getID(ip);
+		
+		PreparedStatement preparedStatement = null;
+		String updateTableSQL = "UPDATE node_resources SET value = ? WHERE node = ? AND name = button";
 		
 		preparedStatement = dbConnection.prepareStatement(updateTableSQL);
 
