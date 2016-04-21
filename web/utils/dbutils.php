@@ -113,11 +113,11 @@
 	                $resultArray[$i][3] = $records; 
 	            }
 	        }
+	        $db = null;
 	    }
 	    catch(PDOException $e){
 		    echo $e->getMessage();
 	    }
-
 		return $resultArray;
     }
 
@@ -130,10 +130,14 @@
 			$stmt = $db->prepare($sql);
 			$stmt->execute();
 			$result = $stmt->fetchAll();
+			
+			$stmt = null;
+	    	$db = null;
 		}
 		catch(PDOException $e){
 		    echo $e->getMessage();
 	    }
+	   
 	    return $result;
     }
 
@@ -141,18 +145,78 @@
     function insertNode($name, $type, $zone){
     	try{
     		//random unique integer only ID
-    		//$id = md5(uniqid(rand(), true));
     		$id = hexdec(uniqid());
 			$db = getConnection();
 
 			$sql = "INSERT INTO authorized_nodes (keycode, name, type, zone, active) VALUES(?,?,?,?,?)";
             $stmt = $db->prepare($sql);
             $stmt->execute(array($id,$name,$type,$zone,0));
+
+            $stmt = null;
+	    	$db = null;
 		}
 		catch(PDOException $e){
 		    echo $e->getMessage();
 	    }
+	  
 	    return $id;
+    }
+
+
+    //return nodes by zone name
+    function getZoneNodes($zone){
+    	try{
+    		$db = getConnection();
+
+    		$sql = "SELECT id FROM infrastructure_zones WHERE name = ?";
+    		$stmt = $db->prepare($sql);
+    		$stmt->execute(array($zone));
+    		$zone_id = $stmt->fetch()['id'];
+    		$stmt->closeCursor();
+
+    		$sql = "SELECT id FROM authorized_nodes WHERE zone = ?";
+			$stmt = $db->prepare($sql);
+			$stmt->execute(array($zone_id));
+			$result = $stmt->fetchAll();
+
+			$stmt = null;
+	    	$db = null;
+    	}
+    	catch(PDOException $e){
+		    echo $e->getMessage();
+	    }
+	  
+	    return $result;
+
+    }
+
+    //return up-to-date values on infrastructure resources for web display
+    function getWebResources($zone){
+    	try{
+
+    		$nodes = getZoneNodes($zone);
+
+  			$db = getConnection();  
+    		$sql = "SELECT name,endpoint,value FROM node_resources WHERE node = ?";
+    		foreach($nodes as $node){
+				$stmt = $db->prepare($sql);
+				$stmt->execute(array($node['id']));
+				$result = $stmt->fetchAll();
+				foreach($result as $row){
+                    echo "<tr>";
+                        echo "<td>".$row['name']."</td>";
+                        echo "<td>".$row['endpoint']."</td>";
+                        echo "<td style='text-align:center'>".$row['value']."</td>";
+                    echo "</tr>";
+				}
+				$stmt = null;
+    		}
+			$db = null;
+
+    	}
+    	catch(PDOException $e){
+		    echo $e->getMessage();
+	    }
     }
 
 ?>

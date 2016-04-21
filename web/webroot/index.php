@@ -5,16 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
    
-    <!-- Bootstrap core CSS -->
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="icon" href="resources/icon.png">
+    <link href="resources/css/cover.css" rel="stylesheet">
 
     <title>Parallax</title>
 
-    <!-- Custom styles for this template -->
-    <link href="resources/css/cover.css" rel="stylesheet">
-
+    <?php
+      ini_set('display_errors',1);
+      error_reporting(E_ALL|E_STRICT);
+      include '../utils/dbutils.php';
+      $zones = getZones();
+    ?>
+   
   </head>
 
   <body>
@@ -39,35 +42,42 @@
           </div>
 
           <div class="inner cover" style="margin-top: 150px; text-align: left">
-<ul class="nav nav-pills">
-  <li role="presentation" class="active"><a href="#">NT-1F</a></li>
-  <li role="presentation"><a href="#">DM</a></li>
-  <li role="presentation"><a href="#">CL</a></li>
-</ul>
+			<ul id="myTab" class="nav nav-tabs">
+				<?php
+	          		$size = count($zones);
+	          		for($i = 0; $i < $size; ++$i){
+	          			if($i == 0){
+	          				echo "<li class='active'><a href='#".$zones[$i][1]."' data-toggle='tab'>".$zones[$i][1]."</a></li>";
+	          			} else {
+	          				echo "<li class=''><a href='#".$zones[$i][1]."' data-toggle='tab'>".$zones[$i][1]."</a></li>";
+	          			}      
+	          		}
+	        	 ?>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<?php
+	          		$size = count($zones);
+	          		for($i = 0; $i < $size; ++$i){
+		          		if($i == 0){
+		          			echo "<div class='tab-pane fade active in' id='".$zones[$i][1]."'>";	
+		          		} else {
+		          			echo "<div class='tab-pane fade in' id='".$zones[$i][1]."'>";
+		          		}
+		          		echo "<h3>".$zones[$i][2]."</h3>";
+		          		echo "<div>";
+		          			echo "<table id='".$zones[$i][1]."' style='margin-top: 30px' class='table'>";
+			          			echo "<thead>";
+			          				echo "<tr><th width='50%'>Name</th><th width='30%'>Resource</th><th width='20%'>Latest Reading</th></tr>";
+					  			echo "</thead>";
+					  			echo "<tbody></tbody>";
+				  			echo "</table>";
+		          		echo "</div>";
+		          		echo "</div>";
+		          	}  
+	        	 ?>
+  		    </div>
 
-	  <h3>North Tower - First Floor</h3>
-      <table style="margin-top: 30px" class="table">
-  			<tr>
-  				<th width="50%">Name</th>
-  				<th width="30%">Resource</th>
-  				<th width="20%">Latest Reading</th>
-  			</tr>
-  			<tr>
-  				<td>tmp-sensor-room-001</td>
-  				<td>temperature</td>
-  				<td style="text-align:center">23ºC</td>
-  			</tr>
-  			<tr>
-  				<td>hum-sensor-room-125</td>
-  				<td>humidity</td>
-  				<td style="text-align:center">OK</td>
-  			</tr>
-  			<tr>
-  				<td>hum-sensor-room-234</td>
-  				<td>humidity</td>
-  				<td style="text-align:center">HIGH</td>
-  			</tr>
-		  </table>
+	 
 			
           </div>
           
@@ -92,20 +102,20 @@
   </body>
   
   <script>
-  	$( "#form" ).submit(function( event ) {
-  		event.preventDefault();
-		$('#data').html("flashing new firmware, please wait...");
-  		$.ajax({    //fetches data from file and inserts it in <div id="data"></div>
-  			type: 'post',
-     		url:'flash.php',
-     		data:{device: $('#device-type').val(),
-     			  coap: $('#coap').is(':checked'),
-     			  llsec: $('#llsec').is(':checked'),
-     			  dtls: $('#dtls').is(':checked')},
-     		success :function(data){
-				$('#data').html("Flashing Completed");
-     		}	
-   		}); 
+  	$(document).ready(function(){
+	    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+	        var currentTab = $(e.target).text();
+	        //alert(currentTab);
+	        $.ajax({
+	  			type: 'post',
+	     		url:'resources/php/actuator.php',
+	     		data:{command: 'get_resources',
+	     			  zone: $(e.target).text()},
+	     		success :function(response){
+	     			$('table#'+$(e.target).text()+' tbody').html(response);
+	     		},
+   			}); 
+	    });
 	});
    </script>
   

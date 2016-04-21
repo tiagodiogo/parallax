@@ -29,6 +29,15 @@
             	$zone = $_POST['zone'];
             	$id = insertNode($name, $type, $zone);
             	echo $id;
+            	break;
+            	
+            case 'get_resources':
+            	$zone = $_POST['zone'];
+            	ob_start();
+				getWebResources($zone);
+				$output = ob_get_clean();
+            	echo $output;
+            	break;
         }
     }
 ?>
